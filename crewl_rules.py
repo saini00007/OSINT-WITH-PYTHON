@@ -1,7 +1,6 @@
 import requests
 from urllib.parse import urljoin
 
-# ANSI escape codes for text formatting
 ANSI_RED = "\033[91m"
 ANSI_GREEN = "\033[92m"
 ANSI_YELLOW = "\033[93m"
@@ -9,18 +8,17 @@ ANSI_BOLD = "\033[1m"
 ANSI_RESET = "\033[0m"
 
 def get_robots_txt(url):
-    # Get the base URL
+    
     base_url = urljoin(url, "/")
 
-    # Fetch the robots.txt file
+    
     robots_url = urljoin(base_url, "robots.txt")
     response = requests.get(robots_url)
     if response.status_code != 200:
         print("Failed to fetch robots.txt:", response.status_code)
         return
 
-    # Parse robots.txt and extract rules
-    lines = response.text.splitlines()
+     lines = response.text.splitlines()
     user_agent = ""
     crawl_rules = []
     for line in lines:
@@ -30,8 +28,7 @@ def get_robots_txt(url):
             rule = line.split(":")[1].strip()
             crawl_rules.append((user_agent, rule))
 
-    # Print crawl rules with style and colors
-    print(ANSI_BOLD + "Crawl Rules for", base_url + ANSI_RESET)
+      print(ANSI_BOLD + "Crawl Rules for", base_url + ANSI_RESET)
     for user_agent, rule in crawl_rules:
         print(ANSI_YELLOW + "User-Agent:", user_agent + ANSI_RESET)
         if "allow" in rule:
