@@ -6,13 +6,11 @@ import re
 
 def check_url(url):
     try:
-        # Check if the URL includes a protocol
-        if not url.startswith('http://') and not url.startswith('https://'):
+            if not url.startswith('http://') and not url.startswith('https://'):
             url = 'https://' + url
             
             
-        # Check if the URL matches the pattern
-        if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
+            if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
             #return url
             pass
         else:
@@ -20,7 +18,6 @@ def check_url(url):
 
         response = requests.get(url)
         if response.status_code == 200:
-            #print(Fore.GREEN + f"\nThe URL '{url}' is valid and responding.\n" + Fore.RESET)
             return url
         else:
             raise ConnectionError(f"The URL '{url}' is not responding or invalid url. Status code: {response.status_code}")
@@ -72,8 +69,7 @@ def print_result(result):
         print(Fore.YELLOW + "Skipped:", result['skipped'])
         return
 
-    #print(Fore.YELLOW + "Rank Details:")
-    headers = ['Rank', 'Change Since Yesterday']
+       headers = ['Rank', 'Change Since Yesterday']
     rows = [[rank.get('rank', 'N/A'), rank.get('delta', 'N/A')] for rank in result['ranks']]
     
     print("  - {:<30} {:^} {:<10}".format("Global Ranking", ":" + " " * 5, result['global_ranking']))
