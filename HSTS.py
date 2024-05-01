@@ -3,13 +3,11 @@ import re
 
 def check_url(url):
     try:
-        # Check if the URL includes a protocol
-        if not url.startswith('http://') and not url.startswith('https://'):
+              if not url.startswith('http://') and not url.startswith('https://'):
             url = 'https://' + url
             
             
-        # Check if the URL matches the pattern
-        if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
+            if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
             #return url
             pass
         else:
@@ -32,8 +30,7 @@ def check_hsts_compatibility(url):
 
         if not hsts_header:
             return {'message': 'HSTS not Enabled. \nSite does not serve any HSTS headers.', 'compatible': False, 'hstsHeader': None}
-            #return {'message': 'HSTS not Enabled', 'compatible': False, 'hstsHeader': None}
-
+            
         max_age_match = re.search(r'max-age=(\d+)', hsts_header)
         includes_subdomains = 'includeSubDomains' in hsts_header
         preload = 'preload' in hsts_header
@@ -49,8 +46,7 @@ def check_hsts_compatibility(url):
             return {'message': 'Site is compatible with the HSTS preload list!', 'compatible': True, 'hstsHeader': hsts_header, 'details': details}
         else:
             return {'message': 'HSTS header does not include all subdomains.', 'compatible': False, 'hstsHeader': hsts_header, 'details': details}
-            #return {'message': 'Site is not compatible with the HSTS preload list.', 'compatible': False, 'hstsHeader': hsts_header, 'details': details}
-
+            
     except Exception as e:
         return {'message': f'Error making request: {str(e)}', 'compatible': False, 'hstsHeader': None}
 
