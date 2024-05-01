@@ -5,14 +5,12 @@ from OpenSSL import crypto
 from datetime import datetime
 def check_url(url):
     try:
-        # Check if the URL includes a protocol
-        if not url.startswith('http://') and not url.startswith('https://'):
+           if not url.startswith('http://') and not url.startswith('https://'):
             url = 'http://' + url
 
         response = requests.get(url)
         response.raise_for_status()  # Raise an exception for non-200 status codes
-        #print(f"\nThe URL '{url}' is valid and responding.\n")
-        return url
+             return url
 
     except requests.exceptions.RequestException as e:
         raise Exception(f"The URL '{url}' is invalid or not responding.") #Error: {str(e)}")
