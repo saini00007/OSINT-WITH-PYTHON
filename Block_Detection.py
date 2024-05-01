@@ -7,21 +7,17 @@ import requests
 
 def check_url(url):
     try:
-        # Check if the URL includes a protocol
-        if not url.startswith('http://') and not url.startswith('https://'):
+    if not url.startswith('http://') and not url.startswith('https://'):
             url = 'https://' + url
             
-        # Check if the URL matches the pattern
-        if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
-            #return url
-            pass
+              if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
+                    pass
         else:
             raise ValueError("Invalid URL format. Please enter a valid URL.")
 
         response = requests.get(url)
         if response.status_code == 200:
-            #print(Fore.GREEN + f"\nThe URL '{url}' is valid and responding.\n" + Fore.RESET)
-            return url
+                   return url
         else:
             raise ConnectionError(f"The URL '{url}' is not responding or invalid url. Status code: {response.status_code}")
 
