@@ -11,17 +11,16 @@ def check_url(url):
             url = 'https://' + url
             
             
-        # Check if the URL matches the pattern
+        
         if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
-            #return url
+            
             pass
         else:
             raise ValueError("Invalid URL format. Please enter a valid URL.")
 
         response = requests.get(url)
         if response.status_code == 200:
-            #print(Fore.GREEN + f"\nThe URL '{url}' is valid and responding.\n" + Fore.RESET)
-            return url
+                  return url
         else:
             raise ConnectionError(f"The URL '{url}' is not responding or invalid url. Status code: {response.status_code}")
 
@@ -38,23 +37,20 @@ def handler(url):
         internal_links_map = {}
         external_links_map = {}
 
-        # Get all links on the page
+        
         for link in soup.find_all('a', href=True):
             href = link['href']
             absolute_url = urljoin(url, href)
             
-            # Check if absolute / relative, append to appropriate map or increment occurrence count
-            if absolute_url.startswith(url):
+                 if absolute_url.startswith(url):
                 internal_links_map[absolute_url] = internal_links_map.get(absolute_url, 0) + 1
             elif href.startswith(('http://', 'https://')):
                 external_links_map[absolute_url] = external_links_map.get(absolute_url, 0) + 1
 
-        # Sort by most occurrences, remove duplicates, and convert to list
-        internal_links = sorted(internal_links_map.keys(), key=lambda k: internal_links_map[k], reverse=True)
+            internal_links = sorted(internal_links_map.keys(), key=lambda k: internal_links_map[k], reverse=True)
         external_links = sorted(external_links_map.keys(), key=lambda k: external_links_map[k], reverse=True)
 
-        # If there were no links, then return a message
-        if not internal_links and not external_links:
+            if not internal_links and not external_links:
             return {
                 'statusCode': 400,
                 'body': json.dumps({
@@ -65,8 +61,7 @@ def handler(url):
                 })
             }
 
-        # Extract only the part of the internal links that comes after the provided URL
-        base_url_len = len(url)
+           base_url_len = len(url)
         internal_links = [link[base_url_len:] if link.startswith(url) else link for link in internal_links]
 
         return {'internal': internal_links, 'external': external_links}
