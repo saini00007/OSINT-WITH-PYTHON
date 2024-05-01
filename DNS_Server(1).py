@@ -5,22 +5,19 @@ import re
 
 def check_url(url):
     try:
-        # Check if the URL includes a protocol
-        if not url.startswith('http://') and not url.startswith('https://'):
+       if not url.startswith('http://') and not url.startswith('https://'):
             url = 'https://' + url
             
             
-        # Check if the URL matches the pattern
-        if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
-            #return url
+              if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
+            
             pass
         else:
             raise ValueError("Invalid URL format. Please enter a valid URL.")
 
         response = requests.get(url)
         if response.status_code == 200:
-            #print(Fore.GREEN + f"\nThe URL '{url}' is valid and responding.\n" + Fore.RESET)
-            return url
+                    return url
         else:
             raise ConnectionError(f"The URL '{url}' is not responding or invalid url. Status code: {response.status_code}")
 
@@ -29,24 +26,20 @@ def check_url(url):
 
 def resolve_dns(url):
     try:
-        # Extract domain from URL
+        
         domain = url.replace('https://', '').replace('http://', '')
-        #print("DOMAIN: ", domain)
-
-        # Resolve IPv4 addresses
+        
         addresses = socket.gethostbyname_ex(domain)[-1]
-        #print("ADDRESSES: ", addresses)
         
         results = []
         for address in addresses:
-            # Reverse DNS lookup
+            
             try:
                 hostname = socket.gethostbyaddr(address)[0]
             except socket.herror:
                 hostname = None
             
-            # Check if DoH is supported directly
-            try:
+                try:
                 response = requests.get(f'https://{address}/dns-query')
                 doh_direct_supports = response.status_code == 200
             except ConnectionError:
