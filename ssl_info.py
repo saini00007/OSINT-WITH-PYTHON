@@ -19,28 +19,23 @@ def check_url(url):
  
 
 def get_ssl_certificate_info(url):
-    # Extract hostname from the URL
+    
     hostname = url.split('://')[1].split('/')[0]
     
-    # Create a context for SSL
-    context = ssl.create_default_context()
+      context = ssl.create_default_context()
     
     try:
-        # Connect to the server and get the certificate
-        with socket.create_connection((hostname, 443)) as sock:
+            with socket.create_connection((hostname, 443)) as sock:
             with context.wrap_socket(sock, server_hostname=hostname) as ssock:
                 certificate = ssock.getpeercert()
                 if certificate is None:
                     print("Failed to retrieve SSL certificate.")
                     return
                 
-                # Convert the certificate to an OpenSSL X509 object
-                x509 = crypto.load_certificate(crypto.FILETYPE_PEM, ssl.DER_cert_to_PEM_cert(ssock.getpeercert(True)))
+                      x509 = crypto.load_certificate(crypto.FILETYPE_PEM, ssl.DER_cert_to_PEM_cert(ssock.getpeercert(True)))
                 
-                # Ensure you're working with the server's certificate
-                print(f"Server's certificate: {x509.get_subject().CN}")
+                    print(f"Server's certificate: {x509.get_subject().CN}")
                 
-                # Extract and print the required information
                 print("SSL Certificate")
                 print(f"Subject: {x509.get_subject().CN}")
                 print(f"Issuer: {x509.get_issuer().CN}")
