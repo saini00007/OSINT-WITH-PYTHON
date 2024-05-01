@@ -6,8 +6,7 @@ import re
 
 def check_url(url):
     try:
-        # Check if the URL includes a protocol
-        if not url.startswith('http://') and not url.startswith('https://'):
+            if not url.startswith('http://') and not url.startswith('https://'):
             url = 'https://' + url
             
             
