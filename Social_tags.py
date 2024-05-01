@@ -5,13 +5,11 @@ import re
 
 def check_url(url):
     try:
-        # Check if the URL includes a protocol
-        if not url.startswith('http://') and not url.startswith('https://'):
+              if not url.startswith('http://') and not url.startswith('https://'):
             url = 'https://' + url
             
             
-        # Check if the URL matches the pattern
-        if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
+            if re.match(r'^https?://(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$', url):
             #return url
             pass
         else:
@@ -19,8 +17,7 @@ def check_url(url):
 
         response = requests.get(url)
         if response.status_code == 200:
-            #print(Fore.GREEN + f"\nThe URL '{url}' is valid and responding.\n" + Fore.RESET)
-            return url
+               return url
         else:
             raise ConnectionError(f"The URL '{url}' is not responding or invalid url. Status code: {response.status_code}")
 
@@ -37,13 +34,13 @@ def get_metadata(url):
         soup = BeautifulSoup(html, 'html.parser')
 
         metadata = {
-            # Basic meta tags
+            
             'title': soup.find('title').get_text() if soup.find('title') else None,
             'description': soup.find('meta', attrs={'name': 'description'})['content'] if soup.find('meta', attrs={'name': 'description'}) else None,
             'keywords': soup.find('meta', attrs={'name': 'keywords'})['content'] if soup.find('meta', attrs={'name': 'keywords'}) else None,
             'canonicalUrl': soup.find('link', attrs={'rel': 'canonical'})['href'] if soup.find('link', attrs={'rel': 'canonical'}) else None,
 
-            # OpenGraph Protocol
+            
             'ogTitle': soup.find('meta', attrs={'property': 'og:title'})['content'] if soup.find('meta', attrs={'property': 'og:title'}) else None,
             'ogType': soup.find('meta', attrs={'property': 'og:type'})['content'] if soup.find('meta', attrs={'property': 'og:type'}) else None,
             'ogImage': soup.find('meta', attrs={'property': 'og:image'})['content'] if soup.find('meta', attrs={'property': 'og:image'}) else None,
@@ -51,7 +48,7 @@ def get_metadata(url):
             'ogDescription': soup.find('meta', attrs={'property': 'og:description'})['content'] if soup.find('meta', attrs={'property': 'og:description'}) else None,
             'ogSiteName': soup.find('meta', attrs={'property': 'og:site_name'})['content'] if soup.find('meta', attrs={'property': 'og:site_name'}) else None,
 
-            # Twitter Cards
+            
             'twitterCard': soup.find('meta', attrs={'name': 'twitter:card'})['content'] if soup.find('meta', attrs={'name': 'twitter:card'}) else None,
             'twitterSite': soup.find('meta', attrs={'name': 'twitter:site'})['content'] if soup.find('meta', attrs={'name': 'twitter:site'}) else None,
             'twitterCreator': soup.find('meta', attrs={'name': 'twitter:creator'})['content'] if soup.find('meta', attrs={'name': 'twitter:creator'}) else None,
@@ -59,7 +56,7 @@ def get_metadata(url):
             'twitterDescription': soup.find('meta', attrs={'name': 'twitter:description'})['content'] if soup.find('meta', attrs={'name': 'twitter:description'}) else None,
             'twitterImage': soup.find('meta', attrs={'name': 'twitter:image'})['content'] if soup.find('meta', attrs={'name': 'twitter:image'}) else None,
 
-            # Misc
+            
             'themeColor': soup.find('meta', attrs={'name': 'theme-color'})['content'] if soup.find('meta', attrs={'name': 'theme-color'}) else None,
             'robots': soup.find('meta', attrs={'name': 'robots'})['content'] if soup.find('meta', attrs={'name': 'robots'}) else None,
             'googlebot': soup.find('meta', attrs={'name': 'googlebot'})['content'] if soup.find('meta', attrs={'name': 'googlebot'}) else None,
@@ -80,10 +77,8 @@ def get_metadata(url):
 def print_colored_metadata(metadata):
     theme_color = metadata.get('themeColor', 'N/A')
     if theme_color != 'N/A' and theme_color is not None:
-        # Convert the hex color code to its corresponding ANSI color code
-        theme_color_ansi = "\033[48;2;{};{};{}m".format(*tuple(int(theme_color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4)))
-        # Reset color after printing
-        reset_color = "\033[0m"
+          theme_color_ansi = "\033[48;2;{};{};{}m".format(*tuple(int(theme_color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4)))
+       reset_color = "\033[0m"
     else:
         theme_color_ansi = ''
         reset_color = ''
